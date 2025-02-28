@@ -50,8 +50,8 @@ def find_hough_shape(image, edge_image, r_min, r_max, bin_threshold):
 	for point in edge_points:
 		y, x = point
 		for r, theta in shape_candidates:
-			x_center = int(x - r * cos_thetas[theta // 2])
-			y_center = int(y - r * sin_thetas[theta // 2])
+			x_center = int(x - r * sin_thetas[theta // 2])
+			y_center = int(y - r * cos_thetas[theta // 2])
 			
 			#vote for current candidate
 			if x_center >= 0 and x_center < img_width and y_center >= 0 and y_center < img_height:
@@ -88,8 +88,8 @@ def find_hough_shape(image, edge_image, r_min, r_max, bin_threshold):
 
 		# We found heart at (x,y) with radius r. 
 		# Generate all the x1 and y1 points of that heart.
-		x1 = x + r * parametric_x(np.linspace(0, 2 * np.pi, 100))
-		y1 = x + r * parametric_x(np.linspace(0, 2 * np.pi, 100))
+		x1 = x + r * parametric_x(np.linspace(0, 2 * np.pi, 180))
+		y1 = y + r * parametric_y(np.linspace(0, 2 * np.pi, 180))
 
 		colors = [
 			(255, 0, 0),  # 'b' (blue)
@@ -113,7 +113,7 @@ def find_hough_shape(image, edge_image, r_min, r_max, bin_threshold):
 	return output_img
 
 
-IMAGE_NAME = "med"
+IMAGE_NAME = "simple"
 
 image = cv2.imread(f'{IMAGE_NAME}.jpg')
 edge_image = cv2.cvtColor(image, cv2.COLOR_BGR2GRAY)
@@ -121,10 +121,10 @@ edge_image = cv2.cvtColor(image, cv2.COLOR_BGR2GRAY)
 min_edge_threshold, max_edge_threshold = 100, 200
 edge_image = cv2.Canny(edge_image, min_edge_threshold, max_edge_threshold) # Apply edge detector with min_edge_threshold, max_edge_threshold
 
-r_min = 2.1 #1
-r_max = 5.1 #4
+r_min = 6.85 #1
+r_max = 6.95 #4
 
-bin_threshold = 0.29 #0.1
+bin_threshold = 0.17 #0.1
 
 if edge_image is not None:
     
