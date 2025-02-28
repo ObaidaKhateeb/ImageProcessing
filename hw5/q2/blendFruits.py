@@ -9,9 +9,9 @@ import matplotlib.pyplot as plt
 
 def get_laplacian_pyramid(image, levels, resize_ratio=0.5):
 	laplacian_pyr = []
-	image = image
+	image = image = image.astype(np.float32) 
 	for i in range(levels - 1):
-		blurred_img = cv2.GaussianBlur(image, (5, 5), 0)
+		blurred_img = cv2.GaussianBlur(image, (13,13), 0)
 		layer = cv2.subtract(image, blurred_img)
 		laplacian_pyr.append(layer)
 		new_width = max(1, int(image.shape[1] * resize_ratio)) 
@@ -24,7 +24,7 @@ def get_laplacian_pyramid(image, levels, resize_ratio=0.5):
 def restore_from_pyramid(pyramidList, resize_ratio=2):
 	image = pyramidList[-1]
 	for i in range(len(pyramidList) - 2, -1, -1):
-		image = cv2.resize(image, None, fx=resize_ratio, fy=resize_ratio, interpolation=cv2.INTER_CUBIC).astype(np.float32)
+		image = cv2.resize(image, (pyramidList[i].shape[1], pyramidList[i].shape[0]), interpolation=cv2.INTER_CUBIC)
 		image = cv2.add(image, pyramidList[i])
 		plt.imshow(image, cmap='gray')
 		plt.show()
@@ -32,7 +32,7 @@ def restore_from_pyramid(pyramidList, resize_ratio=2):
 
 
 def validate_operation(img):
-	pyr = get_laplacian_pyramid(img, 10)
+	pyr = get_laplacian_pyramid(img, 5)
 	img_restored = restore_from_pyramid(pyr)
 
 	plt.title(f"MSE is {np.mean((img_restored - img) ** 2)}")
