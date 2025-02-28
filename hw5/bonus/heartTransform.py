@@ -113,7 +113,7 @@ def find_hough_shape(image, edge_image, r_min, r_max, bin_threshold):
 	return output_img
 
 
-IMAGE_NAME = "simple"
+IMAGE_NAME = "hard"
 
 image = cv2.imread(f'{IMAGE_NAME}.jpg')
 edge_image = cv2.cvtColor(image, cv2.COLOR_BGR2GRAY)
@@ -121,10 +121,20 @@ edge_image = cv2.cvtColor(image, cv2.COLOR_BGR2GRAY)
 min_edge_threshold, max_edge_threshold = 100, 200
 edge_image = cv2.Canny(edge_image, min_edge_threshold, max_edge_threshold) # Apply edge detector with min_edge_threshold, max_edge_threshold
 
-r_min = 6.85 #1
-r_max = 6.95 #4
+#Parameters for simple.jpg
+# r_min = 6.85 
+# r_max = 6.95 
+# bin_threshold = 0.13 #until 0.31
 
-bin_threshold = 0.17 #0.1
+#Parameters for med.jpg
+# r_min = 2.65
+# r_max = 3.7
+# bin_threshold = 0.23 #until 0.3
+
+#Parameters for hard.jpg
+r_min = 2.85
+r_max = 11.4
+bin_threshold = 0.24 #until 0.28
 
 if edge_image is not None:
     
