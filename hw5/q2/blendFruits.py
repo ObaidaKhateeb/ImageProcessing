@@ -42,8 +42,19 @@ def validate_operation(img):
 	
 
 def blend_pyramids(levels):
-	# Your code goes here
-	pass
+	global pyr_apple, pyr_orange
+	blended_pyr = []
+	for apple_layer, orange_layer in zip(pyr_apple, pyr_orange):
+		rows, cols = apple_layer.shape
+		mask = np.zeros((rows, cols), dtype=np.float32)
+		mask[:, :cols // 2] = 1
+		blend_width = cols // 10
+		for j in range(cols // 2 - blend_width, cols // 2 + blend_width):
+			if 0 <= j < cols:
+				mask[:, j] = 0.5 + 0.5 * np.cos(np.pi * (j - (cols // 2 - blend_width)) / (2 * blend_width))
+		blended_layer = mask * apple_layer + (1 - mask) * orange_layer
+		blended_pyr.append(blended_layer)
+	return blended_pyr
 
 
 apple = cv2.imread('apple.jpg')
@@ -55,14 +66,11 @@ orange = cv2.cvtColor(orange, cv2.COLOR_BGR2GRAY)
 validate_operation(apple)
 validate_operation(orange)
 
-pyr_apple = get_laplacian_pyramid(apple)
-pyr_orange = get_laplacian_pyramid(orange)
+pyr_apple = get_laplacian_pyramid(apple, 10)
+pyr_orange = get_laplacian_pyramid(orange, 10)
 
 
-
-pyr_result = []
-
-# Your code goes here
+pyr_result = blend_pyramids(10)
 
 final = restore_from_pyramid(pyr_result)
 plt.imshow(final, cmap='gray')
