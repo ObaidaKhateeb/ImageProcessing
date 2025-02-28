@@ -11,7 +11,7 @@ def get_laplacian_pyramid(image, levels, resize_ratio=0.5):
 	laplacian_pyr = []
 	image = image = image.astype(np.float32) 
 	for i in range(levels - 1):
-		blurred_img = cv2.GaussianBlur(image, (13,13), 0)
+		blurred_img = cv2.GaussianBlur(image, (27,27), 0)
 		layer = cv2.subtract(image, blurred_img)
 		laplacian_pyr.append(layer)
 		new_width = max(1, int(image.shape[1] * resize_ratio)) 
@@ -69,4 +69,3 @@ plt.imshow(final, cmap='gray')
 plt.show()
 
 cv2.imwrite("result.jpg", final)
-
