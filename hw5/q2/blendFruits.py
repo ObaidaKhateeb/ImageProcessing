@@ -46,7 +46,7 @@ def blend_pyramids(levels):
 		rows, cols = apple_layer.shape
 		mask = np.zeros((rows, cols), dtype=np.float32)
 		mask[:, :cols // 2] = 1
-		blend_width = cols // 5
+		blend_width = cols // 7
 		for j in range(cols // 2 - blend_width, cols // 2 + blend_width):
 			if 0 <= j < cols:
 				mask[:, j] = 0.5 + 0.5 * np.cos(np.pi * (j - (cols // 2 - blend_width)) / (2 * blend_width))
