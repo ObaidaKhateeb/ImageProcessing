@@ -26,13 +26,11 @@ def restore_from_pyramid(pyramidList, resize_ratio=2):
 	for i in range(len(pyramidList) - 2, -1, -1):
 		image = cv2.resize(image, (pyramidList[i].shape[1], pyramidList[i].shape[0]), interpolation=cv2.INTER_CUBIC)
 		image = cv2.add(image, pyramidList[i])
-		plt.imshow(image, cmap='gray')
-		plt.show()
 	return image
 
 
 def validate_operation(img):
-	pyr = get_laplacian_pyramid(img, 5)
+	pyr = get_laplacian_pyramid(img, 6)
 	img_restored = restore_from_pyramid(pyr)
 
 	plt.title(f"MSE is {np.mean((img_restored - img) ** 2)}")
@@ -48,11 +46,11 @@ def blend_pyramids(levels):
 		rows, cols = apple_layer.shape
 		mask = np.zeros((rows, cols), dtype=np.float32)
 		mask[:, :cols // 2] = 1
-		blend_width = cols // 10
+		blend_width = cols // 5
 		for j in range(cols // 2 - blend_width, cols // 2 + blend_width):
 			if 0 <= j < cols:
 				mask[:, j] = 0.5 + 0.5 * np.cos(np.pi * (j - (cols // 2 - blend_width)) / (2 * blend_width))
-		blended_layer = mask * apple_layer + (1 - mask) * orange_layer
+		blended_layer = mask * orange_layer + (1 - mask) * apple_layer
 		blended_pyr.append(blended_layer)
 	return blended_pyr
 
@@ -66,11 +64,11 @@ orange = cv2.cvtColor(orange, cv2.COLOR_BGR2GRAY)
 validate_operation(apple)
 validate_operation(orange)
 
-pyr_apple = get_laplacian_pyramid(apple, 10)
-pyr_orange = get_laplacian_pyramid(orange, 10)
+pyr_apple = get_laplacian_pyramid(apple, 6)
+pyr_orange = get_laplacian_pyramid(orange, 6)
 
 
-pyr_result = blend_pyramids(10)
+pyr_result = blend_pyramids(6)
 
 final = restore_from_pyramid(pyr_result)
 plt.imshow(final, cmap='gray')
