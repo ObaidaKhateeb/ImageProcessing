@@ -1,5 +1,5 @@
-# Student_Name1, Student_ID1
-# Student_Name2, Student_ID2
+# Obaida Khateeb, 201278066
+# Maya Atwan, 314813494
 
 # Please replace the above comments with your names and ID numbers in the same format.
 
