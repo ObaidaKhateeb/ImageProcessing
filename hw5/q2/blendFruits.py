@@ -10,12 +10,12 @@ import matplotlib.pyplot as plt
 def get_laplacian_pyramid(image, levels, resize_ratio=0.5):
 	laplacian_pyr = []
 	image = image = image.astype(np.float32) 
-	for i in range(levels - 1):
-		blurred_img = cv2.GaussianBlur(image, (27,27), 0)
+	for i in range(levels- 1):
+		blurred_img = cv2.GaussianBlur(image,(27,27),0)
 		layer = cv2.subtract(image, blurred_img)
 		laplacian_pyr.append(layer)
-		new_width = max(1, int(image.shape[1] * resize_ratio)) 
-		new_height = max(1, int(image.shape[0] * resize_ratio))
+		new_width = max(1,int(image.shape[1]*resize_ratio)) 
+		new_height = max(1,int(image.shape[0]*resize_ratio))
 		image = cv2.resize(blurred_img, (new_width, new_height), interpolation=cv2.INTER_CUBIC)
 	laplacian_pyr.append(image)
 	return laplacian_pyr
@@ -41,17 +41,23 @@ def validate_operation(img):
 
 def blend_pyramids(levels):
 	global pyr_apple, pyr_orange
-	blended_pyr = []
+	blended_pyr = [] #initializing blended pyramid
 	for apple_layer, orange_layer in zip(pyr_apple, pyr_orange):
 		rows, cols = apple_layer.shape
+		
+		#Initiallizing the mask
 		mask = np.zeros((rows, cols), dtype=np.float32)
-		mask[:, :cols // 2] = 1
-		blend_width = cols // 7
-		for j in range(cols // 2 - blend_width, cols // 2 + blend_width):
+		mask[:, :cols// 2] = 1 #Setting the mask to 1 on one side 
+
+		blend_width = cols// 7 #Defining the blending window width
+		for j in range(cols// 2 - blend_width, cols // 2 + blend_width):
 			if 0 <= j < cols:
-				mask[:, j] = 0.5 + 0.5 * np.cos(np.pi * (j - (cols // 2 - blend_width)) / (2 * blend_width))
-		blended_layer = mask * orange_layer + (1 - mask) * apple_layer
-		blended_pyr.append(blended_layer)
+				mask[:, j] = 0.5 + 0.5 *np.cos(np.pi * (j -(cols //2 -blend_width)) / (2*blend_width))
+		
+		#Cross-Dissolve
+		blended_layer = mask *orange_layer + (1 -mask) *apple_layer
+
+		blended_pyr.append(blended_layer) #adding the blended layer to the blended pyramid
 	return blended_pyr
 
 
