@@ -11,18 +11,22 @@ def get_laplacian_pyramid(image, levels, resize_ratio=0.5):
 	laplacian_pyr = []
 	image = image = image.astype(np.float32) 
 	for i in range(levels- 1):
-		blurred_img = cv2.GaussianBlur(image,(27,27),0)
+		
+		#Creating a layer
+		blurred_img = cv2.GaussianBlur(image,(27,27),0) 
 		layer = cv2.subtract(image, blurred_img)
 		laplacian_pyr.append(layer)
-		new_width = max(1,int(image.shape[1]*resize_ratio)) 
+
+		#Downsampling
+		new_width = max(1,int(image.shape[1]*resize_ratio))
 		new_height = max(1,int(image.shape[0]*resize_ratio))
 		image = cv2.resize(blurred_img, (new_width, new_height), interpolation=cv2.INTER_CUBIC)
-	laplacian_pyr.append(image)
+	laplacian_pyr.append(image) #adding the remaining image as the last layer
 	return laplacian_pyr
 
 
 def restore_from_pyramid(pyramidList, resize_ratio=2):
-	image = pyramidList[-1]
+	image = pyramidList[-1] #initializing the image as the highest layer
 	for i in range(len(pyramidList) - 2, -1, -1):
 		image = cv2.resize(image, (pyramidList[i].shape[1], pyramidList[i].shape[0]), interpolation=cv2.INTER_CUBIC)
 		image = cv2.add(image, pyramidList[i])

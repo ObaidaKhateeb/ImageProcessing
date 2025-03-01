@@ -54,7 +54,7 @@ def find_hough_shape(image, edge_image, r_min, r_max, bin_threshold):
 			y_center = int(y - r * cos_thetas[theta // 2])
 			
 			#vote for current candidate
-			if x_center >= 0 and x_center < img_width and y_center >= 0 and y_center < img_height:
+			if x_center >= 0 and x_center < img_width and y_center >= 0 and y_center < img_height: #checking if the center is within the image bounds
 				accumulator[(x_center, y_center, r)] += 1
 
 	# Output image with detected lines drawn
