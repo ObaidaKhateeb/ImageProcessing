@@ -1,0 +1,58 @@
+##image 2
+# first matching
+381 282 #img1
+174 94 #img2
+
+# second
+421 227 #img1
+180 147 #img2
+
+# third matching
+514 331 #img1
+78 136 #img2
+
+
+##################################################################
+## image 3
+# first matching
+449 210 #img1
+106 201 #img3
+
+
+# second matching
+382 252 #img1
+140 252 #img3
+
+# third matching
+494 400 #img1
+245 144 #img3
+
+#######################################################################
+## image 4
+# first matching
+310 210 #img1   
+203 105 #img4
+
+
+# second matching
+259 361#img1
+168 230 #img4
+
+
+# third matching
+230 223 #img1
+136 128 #img4
+#####################################################################
+## image 5
+# first matching 
+230 306 #img1
+57 101 #img5
+
+# second matching 
+283 262 #img1
+89  144 #img5
+
+
+# third matching 
+146 227 #img1
+119 39 #img5
